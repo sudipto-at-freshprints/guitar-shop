@@ -1,0 +1,111 @@
+<div class="text-center mt-1" *ngIf="isShown">
+  <a routerLink="" class="text-decoration-none text-reset">&lt;&lt;Goto developer's blog</a>
+</div>
+<div class="d-flex justify-content-center mt-2">
+  <div
+    class="container bg-dark rounded col-sm-12 col-md-8 col-lg-7 col-xl-6 col-12 bg-dark p-4 rounded border border-success border-5">
+    <div class="d-flex">
+      <img class="" src="{{ imagePath + selectedGuitarData.image + '.jpg' }}"
+        alt="{{ selectedGuitarData.image + '.jpg' }}" width="75" height="75" />
+      <div class="d-flex justify-content-between container">
+        <div class="text-success ms-3 fs-4 fw-bold w-75">
+          {{ selectedGuitarData.name | uppercase }}
+          <div class="text-white mt-2 fw-light fs-8">{{ selectedGuitarData.description }}</div>
+        </div>
+        <div class="text-secondary text-right align-bottom fs-9 text-end ">Price Revised
+          on:{{selectedGuitarData.dateAdded | date: 'MM/yy'}}<div class="text-right badge bg-success p-2 fs-4">
+            $ {{math.round(selectedGuitarData.price)}}</div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isShown">
+      <div class="mt-2">
+        <div class="tab-slider--nav mb-2">
+          <ul class="tab-slider--tabs">
+            <li class="tab-slider--trigger rounded bg-white btn border-end border-dark border-2"
+              [class.active]="viewMode == 'desc'" rel="desc" (click)="viewMode ='desc';setTitle('Description')">
+              Description</li>
+            <li class="tab-slider--trigger rounded bg-white btn border-end border-dark border-2"
+              [class.active]="viewMode == 'spec'" rel="spec" (click)="viewMode ='spec';setTitle('Specifications')">
+              Specifications</li>
+            <li class="tab-slider--trigger rounded bg-white btn border-end border-dark border-2"
+              [class.active]="viewMode == 'rev'" rel="rev" (click)="viewMode ='rev';setTitle('Reviews')">Reviews</li>
+          </ul>
+        </div>
+        <div class="tab-slider--container text-white" [ngSwitch]="viewMode">
+          <div id="desc" class="tab-slider--body" *ngSwitchCase="'desc'">
+            <p class="bg-secondary p-2 rounded">{{selectedGuitarData.longDescription}}</p>
+          </div>
+          <div id="spec" class="tab-slider--body" *ngSwitchCase="'spec'">
+            <p class="bg-secondary p-2 rounded">{{selectedGuitarData.specifications}}</p>
+          </div>
+          <div id="rev" class="tab-slider--body " *ngSwitchCase="'rev'">
+            <ul *ngFor="let review of selectedGuitarData.reviews" class="list-group">
+              <li class="list-group-item bg-secondary dashed-border border-dark rounded">
+                <div class="text-success fs-3">
+                  Review Points: {{ review.star }}
+                </div>
+                <div class="text-white">{{ review.body }}~{{review.name}}</div>
+              </li>
+            </ul>
+            <div class="list-group-item bg-secondary dashed-border border-dark rounded" [hidden]="addReview">
+              <div class="d-flex justify-content-between">
+                <div class="text-success fs-3">
+                  Review Points: {{reviewPoints}}
+                </div>
+                <div class="text-success" (click)="closeReviewTrigger(addReviewForm)">X</div>
+              </div>
+              <div class="text-white">{{ reviewBody }}~{{reviewerName}}</div>
+            </div>
+            <div (click)="addReviewTrigger()" class="mt-1 container fst-italic bg-secondary-medium fw-bolder text-dark">
+              Add review</div>
+            <div [hidden]="addReview" class="bg-secondary-light p-2 text-dark">
+              <form (ngSubmit)="onSubmit()" #addReviewForm="ngForm">
+                <div class="d-flex justify-content-between">
+                  <div class="row align-items-center g-0">
+                    <label for="reviewPoints" class="col-8 fw-bold">Review Points:</label>
+                    <div class="col-4">
+                      <select class="form-select form-select-sm" id="reviewPoints" required [(ngModel)]="reviewPoints"
+                        name="reviewPoints" #power="ngModel">
+                        <option [value]="1">1</option>
+                        <option [value]="2">2</option>
+                        <option [value]="3">3</option>
+                        <option [value]="4">4</option>
+                        <option [value]="5">5</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row align-items-center g-0">
+                    <label for="reviewerName" class="col-4 fw-bold">Name:</label>
+                    <div class="col-8">
+                      <input type="text" class="form-control" id="reviewerName" required [(ngModel)]="reviewerName"
+                        name="reviewerName" #name="ngModel">
+                    </div>
+                  </div>
+                  <div><button type="submit" class="fw-bold btn btn-sm bg-secondary"
+                      [disabled]="!addReviewForm.form.valid">Submit</button></div>
+                </div>
+                <div class="form-group">
+                  <textarea type="text" class="form-control" id="reviewBody" required [(ngModel)]="reviewBody"
+                    name="reviewBody" placeholder="Enter your experience with this guitar..."></textarea>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isHidden" class="text-success border-bottom border-white border-2 fw-bold fs-5">Thanks for shopping with
+      us. you have just ordered a
+      {{selectedGuitarData.image}} guitar</div>
+    <div class="d-flex justify-content-between mt-3">
+      <a routerLink="" class="text-decoration-none text-secondary">&lt;&lt; Go back to {{str}}</a>
+      <button class="btn text-white bg-success" type="button" (click)="showCheckOut()"
+        *ngIf="isShown">Checkout&gt;&gt;</button>
+    </div>
+    <div *ngIf="isShown" class="d-flex justify-content-between mt-2">
+      <button class="btn btn-secondary btn-sm text-dark fw-bold" (click)="viewPrevious()">&lt; Previous</button>
+      <button class="btn btn-secondary btn-sm text-dark fw-bold" (click)="viewNext()">Next &gt;</button>
+    </div>
+  </div>
+</div>

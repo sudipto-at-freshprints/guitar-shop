@@ -1,0 +1,55 @@
+<div class="d-flex mb-3 justify-content-between">
+  <div>
+    <label class="text-white ">Search Guitar</label>
+    <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off"
+      placeholder="Search ..." />
+  </div>
+  <div>
+    <select class="form-select" aria-label="Default select example" name="sortHeader"
+      (change)="updateSortHeader($event)">
+      <option value="name" selected>Name</option>
+      <option value="date">Date</option>
+      <option value="price">Price</option>
+    </select>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="sortOrder" id="asc" value="0"
+        (change)="updateSortOrder($event)">
+      <label class="form-check-label text-white" for="inlineRadio1">Ascending</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="sortOrder" id="desc" value="1"
+        (change)="updateSortOrder($event)" />
+      <label class="form-check-label text-white" for="inlineRadio2">Descending</label>
+    </div>
+  </div>
+</div>
+<div class="text-white">
+  There are currently {{ guitarCount }} guitars in store.
+</div>
+<table class="table table-borderless ">
+  <thead>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let guitar of data | filter: searchText;let i = index">
+      <td>
+        <img class="rounded" src="{{ imagePath + guitar.image + '.jpg' }}" alt="{{ guitar.image + '.jpg' }}" width="50"
+          height="50" />
+      </td>
+      <td>
+        <div>
+          <a class="text-decoration-none text-success fs-5" [routerLink]="['/guitar', i]"
+            (click)="setTitle(guitar.name)">{{ guitar.name }}</a>
+        </div>
+        <div class="fs-7 text-white">{{ guitar.description }}</div>
+      </td>
+      <td class="text-secondary fs-7">
+        Price Revised on: {{ guitar.dateAdded | date: 'MM/yy'}}
+      </td>
+      <td class="text-success fs-5">${{ math.round(guitar.price)}}</td>
+    </tr>
+  </tbody>
+</table>
