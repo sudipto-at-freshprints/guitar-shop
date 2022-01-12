@@ -68,3 +68,9 @@
 .btn-secondary {
   background-color: #c9c9c993 !important;
 }
+
+.price-float{
+  position: absolute;
+  margin-left: 2%;
+  margin-top: 2%;
+}
