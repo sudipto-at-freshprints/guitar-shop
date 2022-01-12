@@ -68,9 +68,11 @@ export class GuitarComponent implements OnInit {
     this.addReview = true;
     form.reset();
   }
-  onSubmit() {
+  onSubmit(form:any) {
     this.dataService.addReview(this.id, this.reviewerName, this.reviewPoints, this.reviewBody);
     this.addReview = true;
+    form.reset();
+
   }
 }
 
