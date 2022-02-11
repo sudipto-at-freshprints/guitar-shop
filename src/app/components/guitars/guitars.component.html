@@ -1,4 +1,4 @@
-<div class="d-flex mb-3 justify-content-between">
+<div class="d-flex mb-3 justify-content-between mt-2">
   <div>
     <label class="text-white ">Search Guitar</label>
     <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off"
@@ -36,20 +36,24 @@
   <tbody>
     <tr *ngFor="let guitar of data | filter: searchText;let i = index">
       <td>
-        <img class="rounded" src="{{ imagePath + guitar.image + '.jpg' }}" alt="{{ guitar.image + '.jpg' }}" width="50"
+        <img class="rounded" src="{{guitar.image}}" alt="{{ guitar.image + '.jpg' }}" width="50"
           height="50" />
       </td>
       <td>
         <div>
-          <a class="text-decoration-none text-success fs-5" [routerLink]="['/guitar', i]"
-            (click)="setTitle(guitar.name)">{{ guitar.name }}</a>
+          <a class="text-decoration-none fs-5" [ngClass]="guitar.soldOut==0?'text-success':'text-danger'"
+            [routerLink]="['/guitar', guitar.guitar_id]" (click)="setTitle(guitar.name)">{{ guitar.name }}</a>
         </div>
         <div class="fs-7 text-white">{{ guitar.description }}</div>
       </td>
       <td class="text-secondary fs-7">
-        Price Revised on: {{ guitar.dateAdded | date: 'MM/yy'}}
+        Price Revised on: {{ guitar.dateModified | date: 'MM/yy'}}
       </td>
-      <td class="text-success fs-5">${{ math.round(guitar.price)}}</td>
+      <td class="fs-5" [ngClass]="guitar.soldOut==0?'text-success':'text-danger'">${{ math.round(guitar.price)}}</td>
     </tr>
   </tbody>
 </table>
+<div class="d-flex align-items-center">
+  <div class="circle bg-danger"></div>
+  <div class="text-white">--&gt;Out of stock</div>
+</div>

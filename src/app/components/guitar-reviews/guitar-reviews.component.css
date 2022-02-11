@@ -1,0 +1,19 @@
+.dashed-border {
+    border-bottom-style: dashed !important;
+  }
+  
+  .bg-secondary {
+    background-color: #6568697e !important;
+  }
+  
+  .bg-secondary-medium {
+    background-color: #c9c9c993 !important;
+  }
+  
+  .bg-secondary-light {
+    background-color: #dfdfdfc9 !important;
+  }
+  
+  .btn-secondary {
+    background-color: #c9c9c993 !important;
+  }

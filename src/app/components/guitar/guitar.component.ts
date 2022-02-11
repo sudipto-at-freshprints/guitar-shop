@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { DataService } from 'src/app/services/data.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
 @Component({
   selector: 'app-guitar',
   templateUrl: './guitar.component.html',
@@ -9,39 +9,43 @@ import { DataService } from 'src/app/services/data.service';
 export class GuitarComponent implements OnInit {
   id: number;
   selectedGuitarData: any;
-  imagePath: string;
   isShown: boolean;
   isHidden: boolean;
   addReview: boolean;
   str: string;
   viewMode: string;
   math: any;
-  data: any[];
   reviewerName: any;
   reviewPoints: any;
   reviewBody: any;
   newTitle: string;
-  constructor(private route: ActivatedRoute, private dataService: DataService) {
+  guitarCount: number;
+  constructor(private route: ActivatedRoute, private router: Router, private apiService: ApiService) {
     this.id = 0;
-    this.route.params.subscribe(params => this.id = Number(params['id']));
-    this.imagePath = this.dataService.imagePath;
+    this.guitarCount = 0;
     this.viewMode = "desc";
     this.str = "Search";
     this.isShown = true;
     this.isHidden = false;
     this.addReview = true;
     this.math = Math;
-    this.data = dataService.data;
-    this.newTitle = 'Description'
+    this.newTitle = 'Description';
+
   }
 
   ngOnInit(): void {
-    this.selectedGuitarData = this.data[this.id];
     this.setTitle(this.newTitle);
-  };
+    this.route.params.subscribe(params => {
+      this.id = Number(params['id']);
+      this.apiService.getGuitar(this.id).subscribe((res) => {
+        this.selectedGuitarData = res.data['0'];
+        this.guitarCount = res.count;
+      });
+    });
+  }
   setTitle(newTitle: string) {
     this.newTitle = newTitle;
-    this.dataService.setTitle(this.selectedGuitarData.name + ' | ' + newTitle)
+    //this.dataService.setTitle(this.selectedGuitarData.name + ' | ' + newTitle)
   }
   showCheckOut() {
     this.isShown = false;
@@ -49,30 +53,19 @@ export class GuitarComponent implements OnInit {
     this.str = "Guitars list";
   }
   viewPrevious() {
-    if (this.id > 0)
+    if (this.id > 1)
       this.id -= 1;
-    this.selectedGuitarData = this.dataService.data[this.id];
+    this.router.navigate(['/guitar/' + this.id]);
     this.setTitle(this.newTitle);
+    this.viewMode="desc";
 
   }
   viewNext() {
-    if (this.id < this.dataService.guitarCount - 1)
+    if (this.id < this.guitarCount)
       this.id += 1;
-    this.selectedGuitarData = this.dataService.data[this.id];
+    this.router.navigate(['/guitar/' + this.id]);
     this.setTitle(this.newTitle);
-  }
-  addReviewTrigger() {
-    this.addReview = false;
-  }
-  closeReviewTrigger(form: any) {
-    this.addReview = true;
-    form.reset();
-  }
-  onSubmit(form:any) {
-    this.dataService.addReview(this.id, this.reviewerName, this.reviewPoints, this.reviewBody);
-    this.addReview = true;
-    form.reset();
-
+    this.viewMode="desc";
   }
 }
 

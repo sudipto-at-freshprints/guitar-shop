@@ -1,0 +1,59 @@
+<div
+  class="container bg-dark rounded col-sm-12 col-md-8 col-lg-7 col-xl-6 col-12 rounded border border-success border-5 mt-4">
+  <h2 [hidden]="!addMode" class=" mt-1 text-success border-bottom border-2 border-success">Add Guitar</h2>
+  <h2 [hidden]="addMode" class=" mt-1 text-success border-bottom border-2 border-success">Edit Guitar</h2>
+  <div class="row justify-content-center">
+    <form [formGroup]="guitarAddForm" enctype="multipart/form-data" class="p-2 col-10">
+      <div class="d-flex align-items-center">
+        <img class="border border-light rounded d-block mb-2" alt="Upload Picture" src="{{imageSrc}}" height="100"
+          width="100" />
+        <div class="mb-2 ms-5 form-floating">
+          <input type="text" id="name" formControlName="name" autofocus class="form-control"
+            placeholder="Enter Guitar Name" name="name" />
+          <label for="name" class="">Guitar Name</label>
+        </div>
+      </div>
+      <div class="mb-2">
+        <input class="btn-sm" type="file" accept="image/*" name="imgu" required (change)="imagePrev($event)" />
+      </div>
+      <div class="row  justify-content-between mb-2">
+        <div class=" col-7 form-floating">
+          <textarea type="text" formControlName="description" rows="3" class="form-control fs-6 h-100"
+            placeholder="Enter brief description" name="desc" id="desc"></textarea>
+          <label for="desc" class="fs-8">Short Description</label>
+        </div>
+        <div class=" mb-2 col-4">
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input type="number" class="form-control" id="price" formControlName="price" placeholder="Enter price"
+              name="price" />
+          </div>
+        </div>
+      </div>
+      <div class="col-12 mb-2 form-floating">
+        <textarea class="form-control h-100" formControlName="longDescription" placeholder="Enter long description"
+          name="longDescription" id=longDescription rows="4"></textarea>
+        <label for="longDescription">Full Description</label>
+      </div>
+      <div class="row justify-content-between align-items-center">
+        <div class="mb-2 form-floating col-5">
+          <select class="form-select" formControlName="category" name="cat" id="cat" name="category">
+            <option value="" class="">Select Category</option>
+            <option value="Expensive">Expensive</option>
+            <option value="Cheap">Cheap</option>
+          </select>
+          <label>Category</label>
+        </div>
+        <div class="mb-2 form-check col-4">
+          <input type="checkbox" class="form-check-input" name="soldOut" id="soldOut" [checked]="inStock" (click)="toggleStock()"/>
+          <label class="text-white" for="form-check-label" for="soldOut">In-Stock</label>
+        </div>
+      </div>
+      <div class="text-center">
+        <button [hidden]="!addMode" class="btn btn-primary" (click)="addGuitar()">Create</button>
+        <button [hidden]="addMode" class="btn text-dark fw-bold bg-success" (click)="updateGuitar()">Update</button>
+      </div>
+    </form>
+    <a [routerLink]="addMode?'':['/guitar/',id]" class="text-decoration-none text-secondary">&lt;&lt; Go back</a>
+  </div>
+</div>
