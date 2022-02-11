@@ -1,0 +1,53 @@
+<ul *ngFor="let review of reviews" class="list-group">
+    <li class="list-group-item bg-secondary dashed-border border-dark rounded">
+      <div class="text-success fs-3">
+        Review Points: {{ review.star }}
+      </div>
+      <div class="text-white">{{ review.review }}~{{review.reviewer_name}}</div>
+    </li>
+  </ul>
+  <div class="list-group-item bg-secondary dashed-border border-dark rounded" [hidden]="addReview">
+    <div class="d-flex justify-content-between">
+      <div class="text-success fs-4">
+        Review Points: {{reviewPoints}}
+      </div>
+      <div class="text-success" (click)="closeReviewTrigger(addReviewForm)">X</div>
+    </div>
+    <div class="text-white">{{ reviewBody }}~{{reviewerName}}</div>
+  </div>
+  <div (click)="addReviewTrigger()" class="mt-1 container fst-italic bg-secondary-medium fw-bolder text-dark">
+    Add review</div>
+  <div [hidden]="addReview" class="bg-secondary-light p-2 text-dark">
+    <form (ngSubmit)="onSubmit(addReviewForm)" #addReviewForm="ngForm">
+      <div class="d-flex justify-content-between">
+        <div class="row align-items-center g-0">
+          <label for="reviewPoints" class="col-8 fw-bold">Review Points:</label>
+          <div class="col-4">
+            <select class="form-select form-select-sm" id="reviewPoints" required [(ngModel)]="reviewPoints"
+              name="reviewPoints" #power="ngModel">
+              <option [value]="1">1</option>
+              <option [value]="2">2</option>
+              <option [value]="3">3</option>
+              <option [value]="4">4</option>
+              <option [value]="5">5</option>
+            </select>
+          </div>
+        </div>
+        <div class="row align-items-center g-0">
+          <label for="reviewerName" class="col-4 fw-bold">Name:</label>
+          <div class="col-8">
+            <input type="text" class="form-control" id="reviewerName" required [(ngModel)]="reviewerName"
+              name="reviewerName" #name="ngModel">
+          </div>
+        </div>
+        <div>
+          <button type="submit" class="fw-bold btn btn-sm bg-secondary"
+            [disabled]="!addReviewForm.form.valid">Submit</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <textarea type="text" class="form-control" id="reviewBody" required [(ngModel)]="reviewBody"
+          name="reviewBody" placeholder="Enter your experience with this guitar..."></textarea>
+      </div>
+    </form>
+  </div>

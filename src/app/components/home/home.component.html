@@ -1,5 +1,8 @@
 <div
   class="container bg-dark rounded col-sm-12 col-md-8 col-lg-7 col-xl-6 col-12 rounded border border-success border-5 mt-4">
-  <h1 class="text-white border-bottom border-success border-3">{{title}}</h1>
+  <div class="d-flex justify-content-between align-items-center border-bottom border-success border-3">
+  <h1 class="text-white">{{title}}</h1>
+  <a routerLink="add-guitar" class="btn bg-success text-white fw-bold">Add</a>
+  </div>
   <app-guitars></app-guitars>
 </div>
